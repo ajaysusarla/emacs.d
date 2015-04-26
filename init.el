@@ -88,3 +88,6 @@
 (show-paren-mode t)
 
 (setq sentence-end-double-space nil)
+
+;; Disable annoying audio sound
+(setq ring-bell-function #'ignore)

@@ -11,7 +11,7 @@
                   htmlize
                   lua-mode
                   git-gutter
-                  git-commit-mode
+                  git-auto-commit-mode
                   tox
                   python
                   pylint
@@ -19,6 +19,8 @@
 		  paredit-everywhere
 		  flymake-easy
 		  flymake-python-pyflakes
-                  rainbow-mode))
+                  git-commit
+                  rainbow-mode
+                  offlineimap))
   (unless (package-installed-p package)
     (package-install package)))

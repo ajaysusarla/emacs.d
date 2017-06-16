@@ -99,6 +99,28 @@
                (c-echo-syntactic-information-p . t)
                (c-basic-offset . 4)))
 
+(c-add-style "fm"
+             '("gnu"
+               (c-offsets-alist
+                (block-open . 0)
+                (block-close . 0)
+                (substatement-open . 0)
+                (case-label . +)
+                (func-decl-cont . 0)
+                (inline-open . 0))
+               (c-hanging-braces-alist
+                (brace-list-close nil)
+                (defun-open before after)
+                (defun-close after)
+                (defun-close after)
+                (class-open before after)
+                (class-close before)
+                (substatement-open after before)
+                (substatement-close after))
+               (c-block-comment-prefx . "* ")
+               (c-echo-syntactic-information-p . t)
+               (c-basic-offset . 4)))
+
 
 (font-lock-add-keywords 'c-mode
                         '(("\\<.+_t\\>" . font-lock-type-face)

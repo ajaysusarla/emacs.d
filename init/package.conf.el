@@ -20,7 +20,10 @@
 		  flymake-easy
 		  flymake-python-pyflakes
                   git-commit
-                  rainbow-mode
-                  offlineimap))
+                  offlineimap
+                  rust-mode
+                  cmake-mode
+                  sml-mode
+                  rainbow-mode))
   (unless (package-installed-p package)
     (package-install package)))

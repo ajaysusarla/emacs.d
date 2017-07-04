@@ -6,6 +6,7 @@
 (global-set-key "\M-p" 'compile)
 (global-set-key "\M-s" 'gdb)
 (global-set-key "\M-_" 'undo)
+(global-set-key "\C-cr" 'revert-buffer)
 
 (global-set-key "\C-cce"
 		(defun saps:edit-dot-emacs ()

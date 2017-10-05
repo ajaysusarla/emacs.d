@@ -8,6 +8,7 @@
     nxml-mode
     diff-mode
     haskell-mode
+    rust-mode
     sql-mode
     rst-mode)
   "What I consider programming languages.")

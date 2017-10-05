@@ -11,6 +11,7 @@
 (require 'cl)
 (require 'package) ;; Install package
 (require 'python)
+(require 'haskell)
 
 
 ;; Disable startup message

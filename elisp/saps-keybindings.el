@@ -9,10 +9,10 @@
 (global-set-key "\C-ccr" 'revert-buffer)
 
 (global-set-key "\C-cce"
-		(defun saps:edit-dot-emacs ()
-		  "Edit ~/.emacs.d/init.el"
-		  (interactive)
-		  (find-file (locate-user-emacs-file "init.el"))))
+                (defun saps:edit-dot-emacs ()
+                  "Edit ~/.emacs.d/init.el"
+                  (interactive)
+                  (find-file (locate-user-emacs-file "init.el"))))
 
 (global-set-key "\C-cq"
                 (defun saps:quit-emacs ()

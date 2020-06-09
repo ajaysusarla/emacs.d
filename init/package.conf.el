@@ -18,7 +18,8 @@
 		   paredit
 		   paredit-everywhere
 		   flymake-easy
-		   flymake-python-pyflakes
+                   flymake-python-pyflakes
+                   flymake-perlcritic
 		   git-commit
 		   offlineimap
 		   rust-mode

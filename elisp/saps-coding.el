@@ -3,6 +3,7 @@
   '(prog-mode
     lua-mode
     cmake-mode
+    cperl-mode
     tex-mode
     css-mode
     nxml-mode
@@ -31,6 +32,20 @@
 (add-hook 'sgml-mode-hook 'saps:customize-prog-mode-common)
 
 (semantic-mode 1) ;;
+
+;; Perl mode
+(defalias 'perl-mode 'cperl-mode)
+;;(setq cperl-indent-level  2)
+;;(cperl-set-style "GNU")
+
+(defun runperltidy ()
+  "Run perltidy on the current buffer or selected region."
+  (interactive)
+  (save-excursion
+    (unless mark-active (mark-defun))
+    (shell-command-on-region (point) (mark) "perltidy -q" nil t)))
+
+(global-set-key "\C-ct" 'runperltidy)
 
 ;; CC mode
 (c-add-style "saps"

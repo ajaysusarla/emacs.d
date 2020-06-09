@@ -49,7 +49,7 @@
 
 ;; Me
 (setq user-full-name "Parthasarathi Susarla")
-(setq user-mail-address "ajaysusarla@gmail.com")
+(setq user-mail-address "mail@spartha.org")
 
 (setq x-select-enable-clipboard t) ;; Clipboard
 (setq jit-lock-stealth-time nil)   ;; reduce polling
@@ -99,3 +99,4 @@
 
 ;; Disable annoying audio sound
 (setq ring-bell-function #'ignore)
+(put 'upcase-region 'disabled nil)

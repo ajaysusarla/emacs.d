@@ -1,5 +1,4 @@
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (package-initialize)
 
@@ -17,14 +16,15 @@
 		   pylint
 		   paredit
 		   paredit-everywhere
-		   flymake-easy
-                   flymake-python-pyflakes
-                   flymake-perlcritic
 		   git-commit
 		   offlineimap
 		   rust-mode
 		   cmake-mode
 		   sml-mode
-		   rainbow-mode))
+                   flycheck
+                   flycheck-haskell
+		   rainbow-mode
+                   hindent
+                   magit))
   (unless (package-installed-p package)
     (package-install package)))

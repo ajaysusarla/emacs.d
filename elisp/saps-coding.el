@@ -22,7 +22,7 @@
 
 (defun saps:customize-programming-language-mode ()
   (saps:customize-prog-mode-common)
-  (flymake-mode 1))
+  (global-flycheck-mode))
 
 (dolist (mode saps:programming-language-major-modes)
   (add-hook
@@ -30,6 +30,8 @@
    'saps:customize-programming-language-mode))
 
 (add-hook 'sgml-mode-hook 'saps:customize-prog-mode-common)
+;; (add-hook 'haskell-mode-hook #'flycheck-haskell-setup)
+;; (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
 
 (semantic-mode 1) ;;
 

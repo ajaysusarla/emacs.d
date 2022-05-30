@@ -3,8 +3,13 @@
 ;;;http://www.emacswiki.org/emacs/DeskTop#toc5
 ;;; Save sessions
 ;; use only one desktop
+;;; Code:
+
+(defvar desktop-dirname)
 (setq desktop-dirname "~/.emacs.d/emacs_desktop")
+(defvar desktop-path)
 (setq desktop-path (list desktop-dirname))
+(defvar desktop-base-file-name)
 (setq desktop-base-file-name "emacs.desktop")
 
 ;; remove desktop after it's been read

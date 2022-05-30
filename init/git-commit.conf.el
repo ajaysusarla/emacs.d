@@ -1,5 +1,5 @@
 ;; Disable toggle-save-place
-;;(require 'git-commit)
+(require 'git-commit)
 ;; (add-hook 'git-commit-mode-hook
 ;;          'turn-on-flyspell)
 ;; (add-hook 'git-commit-mode-hook

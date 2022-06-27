@@ -1,11 +1,14 @@
-;;; init.el
-;;
+;;; package --- package initialise
+;;; Commentary:
+;;;  init.el - says it all
 
 (require 'cl)
 (require 'package) ;; Install package
 (require 'python)
 (require 'haskell)
 
+
+;;; Code:
 
 ;; Disable startup message
 (setq inhibit-startup-message t)
@@ -44,8 +47,8 @@
 (setq user-full-name "Parthasarathi Susarla")
 (setq user-mail-address "mail@spartha.org")
 
-(setq x-select-enable-clipboard t) ;; Clipboard
-(setq jit-lock-stealth-time nil)   ;; reduce polling
+(setq select-enable-clipboard t) ;; Clipboard
+(setq jit-lock-stealth-time nil) ;; reduce polling
 
 ;; Initialisations
 (defvar init-dir
@@ -72,7 +75,7 @@
 ;; Font
 (set-face-attribute 'default (selected-frame) :height 100)
 (setq frame-title-format '("" invocation-name ": %b"))
-(set-frame-font "DejaVu Sans Mono-12")
+(set-frame-font "DejaVu Sans Mono-18")
 
 ;;column-marker - to show the 80 column mark for C source
 (require 'column-marker)
@@ -81,6 +84,20 @@
             (interactive)
             (column-marker-1 80)))
 
+;; complete anything
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 1)
+
+;; Go - lsp-mode
+;; Set up before-save hooks to format buffer and add/delete imports.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Start LSP Mode and YASnippet mode
+(add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook #'yas-minor-mode)
 
 ;; always use spaces to indent, no tab
 (set-default 'indent-tabs-mode nil)

@@ -1,3 +1,7 @@
+;;; package --- Packages to install
+;;; Commentary:
+;;; Code:
+
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (package-initialize)
@@ -25,6 +29,20 @@
                    flycheck-haskell
 		   rainbow-mode
                    hindent
-                   magit))
+                   magit
+                   go-mode
+                   lsp-mode
+                   company
+                   yaml-mode
+                   indent-tools
+                   lsp-ui
+                   yasnippet
+                   yasnippet-snippets
+                   wanderlust
+                   use-package
+                   tide))
   (unless (package-installed-p package)
     (package-install package)))
+
+(provide 'package.conf)
+;;; package.conf.el ends here

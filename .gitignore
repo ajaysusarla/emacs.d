@@ -7,3 +7,6 @@ tramp
 semanticdb/
 saps-autoloads.el
 custom.el
+.lsp-session-v*
+eshell/
+transient/

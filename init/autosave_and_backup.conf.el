@@ -1,5 +1,15 @@
+;;; package --- Summary
+;;; Commentary:
+;;; Code:
+
+(defvar homedir-base-dir)
+
+(if (eq system-type 'darwin)
+    (setq homedir-base-dir "/Users/")  ; if this is MacOS
+    (setq homedir-base-dir "/home/")  ; for other unixes
+    )
 (defvar autosave-dir
-  (concat "/home/" (user-login-name) "/.emacs.d/emacs_autosaves/"))
+  (concat homedir-base-dir (user-login-name) "/.emacs.d/emacs_autosaves/"))
 
 (make-directory autosave-dir t)
 
@@ -18,6 +28,7 @@
 ;; Put backup files (ie foo~) in one place. (The backup-directory-alist
 ;; list contains regexp=>directory mappings; filenames matching a regexp are
 ;; backed up in the corresponding directory. Emacs will mkdir it if necessary.)
-(defvar backup-dir (concat "/home/" (user-login-name) "/.emacs.d/emacs_backups/"))
+(defvar backup-dir (concat homedir-base-dir (user-login-name) "/.emacs.d/emacs_backups/"))
 (setq backup-directory-alist (list (cons "." backup-dir)))
 
+;;; autosave_and_backup.conf.el ends here

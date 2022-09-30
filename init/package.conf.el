@@ -40,6 +40,7 @@
                    yasnippet-snippets
                    wanderlust
                    use-package
+                   rustic
                    tide))
   (unless (package-installed-p package)
     (package-install package)))

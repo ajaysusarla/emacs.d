@@ -75,7 +75,9 @@
 ;; Font
 (set-face-attribute 'default (selected-frame) :height 100)
 (setq frame-title-format '("" invocation-name ": %b"))
-(set-frame-font "DejaVu Sans Mono-18")
+
+(cond ((eq system-type 'darwin) (set-frame-font "DejaVu Sans Mono-18"))
+      (t (set-frame-font "DejaVu Sans Mono-12")))
 
 ;;column-marker - to show the 80 column mark for C source
 (require 'column-marker)

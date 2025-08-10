@@ -245,7 +245,7 @@ quote, for example.")
     (perl-mode       perl          perl-indent-level)    ; Perl
 ;;  (python-mode     python        py-indent-offset)     ; Python
     (ruby-mode       ruby          ruby-indent-level)    ; Ruby
-    (ada-mode        ada           ada-indent)           ; Ada
+;;  (ada-mode        ada           ada-indent)           ; Ada
     (sh-mode         shell         sh-basic-offset)      ; Shell Script
     (pascal-mode     pascal        pascal-indent-level)) ; Pascal
    "A mapping from hook variables to language types.")

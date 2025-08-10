@@ -11,7 +11,7 @@
                 (let ((unread (gnus-group-unread group)))
                   (when (and (numberp unread)
                              (> unread 0))
-                    (return group)))))))))
+                    (cl-return group)))))))))
 (setq display-time-format "")
 (setq display-time-default-load-average nil)
 (setq display-time-use-mail-icon t)

@@ -17,7 +17,7 @@
 (global-set-key "\C-cq"
                 (defun saps:quit-emacs ()
                   (interactive)
-                  (if (yes-or-no-p "Quit emacs? ")
+                  (if (yes-or-no-p "Quit Emacs? ")
                       (save-buffers-kill-emacs)
                     (message "Ciao!"))))
 

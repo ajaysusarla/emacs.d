@@ -5,7 +5,7 @@
 (require 'cl)
 (require 'package) ;; Install package
 (require 'python)
-(require 'haskell)
+;; (require 'haskell)
 
 
 ;;; Code:
@@ -211,7 +211,8 @@
   (lsp-rust-analyzer-display-parameter-hints nil)
   (lsp-rust-analyzer-display-reborrow-hints nil)
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (setq lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :ensure
@@ -317,6 +318,11 @@
            ;; uncomment if lldb-mi is not in PATH
            ;; :lldbmipath "path/to/lldb-mi"
            ))))
+
+;;; transient-mark-mode
+(setq transient-mark-mode t)
+
+(setq lsp-disabled-clients '(ada-language-server))
 
 (provide 'init)
 ;;; init.el ends here

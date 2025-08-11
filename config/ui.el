@@ -100,7 +100,7 @@
   (defun pulse-line (&rest _)
     "Pulse the current line."
     (pulse-momentary-highlight-one-line (point)))
-
+  
   (dolist (command '(scroll-up-command scroll-down-command
                      recenter-top-bottom other-window))
     (advice-add command :after #'pulse-line)))
@@ -137,17 +137,17 @@
   :config
   (auto-dim-other-buffers-mode 1))
 
-;; Dashboard for startup
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-startup-banner 'logo
-        dashboard-center-content t
-        dashboard-items '((recents  . 10)
-                         (projects . 10)
-                         (bookmarks . 5))
-        dashboard-set-heading-icons t
-        dashboard-set-file-icons t))
+;; Dashboard for startup - DISABLED for blank screen
+;; (use-package dashboard
+;;   :config
+;;   (dashboard-setup-startup-hook)
+;;   (setq dashboard-startup-banner 'logo
+;;         dashboard-center-content t
+;;         dashboard-items '((recents  . 10)
+;;                          (projects . 10)
+;;                          (bookmarks . 5))
+;;         dashboard-set-heading-icons t
+;;         dashboard-set-file-icons t))
 
 (provide 'ui)
 ;;; ui.el ends here

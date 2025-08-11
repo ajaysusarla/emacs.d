@@ -4,22 +4,35 @@
 
 ;;; Code:
 
+;; Server mode configuration (from your original saps-server.el)
+(use-package server
+  :ensure nil
+  :config
+  ;; Start server if not running as daemon and not already running
+  (when (and (not (daemonp))
+             (not (server-running-p)))
+    (server-start))
+  
+  ;; In server mode, C-x C-c should delete frame, not kill Emacs
+  (when (or (daemonp) (server-running-p))
+    (global-set-key (kbd "C-x C-c") 'delete-frame)))
+
 ;; macOS specific settings
 (when (eq system-type 'darwin)
   ;; Modifier keys
   (setq mac-command-modifier 'meta
         mac-option-modifier 'super
         ns-function-modifier 'hyper)
-
+  
   ;; Mouse wheel
   (setq mouse-wheel-progressive-speed nil
         mouse-wheel-scroll-amount '(2))
-
+  
   ;; Exec path from shell
   (use-package exec-path-from-shell
     :config
     (exec-path-from-shell-initialize))
-
+  
   ;; Notifications
   (defun my/xml-unescape-string (string)
     (with-temp-buffer

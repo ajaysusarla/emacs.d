@@ -18,7 +18,7 @@
 ;; Startup optimizations
 (setq inhibit-startup-message t
       initial-scratch-message nil
-      initial-major-mode 'text-mode)
+      initial-major-mode 'fundamental-mode)  ; Start in fundamental-mode for blank screen
 
 ;; File handling
 (setq backup-directory-alist

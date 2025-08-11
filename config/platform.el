@@ -19,10 +19,27 @@
 
 ;; macOS specific settings
 (when (eq system-type 'darwin)
-  ;; Modifier keys
-  (setq mac-command-modifier 'meta
-        mac-option-modifier 'super
-        ns-function-modifier 'hyper)
+  ;; Modifier keys - Use Alt (Option) as Meta instead of Command
+  (setq mac-option-modifier 'meta        ; Alt/Option key becomes Meta
+        mac-command-modifier 'super      ; Command key becomes Super (less used)
+        ns-function-modifier 'hyper)     ; Function key becomes Hyper
+  
+  ;; Function to toggle modifier key setup
+  (defun my/toggle-mac-modifiers ()
+    "Toggle between Alt-as-Meta and Command-as-Meta setups."
+    (interactive)
+    (if (eq mac-option-modifier 'meta)
+        (progn
+          (setq mac-command-modifier 'meta
+                mac-option-modifier 'super)
+          (message "Switched to Command-as-Meta (default macOS Emacs style)"))
+      (progn
+        (setq mac-option-modifier 'meta
+              mac-command-modifier 'super)
+        (message "Switched to Alt-as-Meta (PC-style)"))))
+  
+  ;; Bind to a key for easy switching
+  (global-set-key (kbd "C-c m") 'my/toggle-mac-modifiers)
   
   ;; Mouse wheel
   (setq mouse-wheel-progressive-speed nil

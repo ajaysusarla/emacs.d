@@ -142,7 +142,7 @@
     good-scroll
     visual-regexp
     auto-dim-other-buffers
-    dashboard
+    ;; dashboard  ; Commented out for blank startup screen
 
     ;; Platform-specific
     exec-path-from-shell)

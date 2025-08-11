@@ -17,6 +17,8 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "M-/") 'hippie-expand)
 
+
+
 ;; Custom functions
 (global-set-key (kbd "C-c e")
                 (defun my/edit-init-file ()
@@ -26,11 +28,44 @@
 
 (global-set-key (kbd "C-c q")
                 (defun my/quit-emacs ()
-                  "Quit Emacs with confirmation"
+                  "Quit Emacs with confirmation, handling server mode appropriately"
                   (interactive)
-                  (if (yes-or-no-p "Quit Emacs? ")
-                      (save-buffers-kill-emacs)
-                    (message "Cancelled"))))
+                  (if (daemonp)
+                      (if (yes-or-no-p "Kill Emacs daemon? ")
+                          (kill-emacs)
+                        (delete-frame))
+                    (if (yes-or-no-p "Quit Emacs? ")
+                        (save-buffers-kill-emacs)
+                      (message "Cancelled")))))
+
+;; Server mode utilities
+(global-set-key (kbd "C-c s s") 
+                (defun my/start-server ()
+                  "Start Emacs server if not running"
+                  (interactive)
+                  (if (server-running-p)
+                      (message "Server already running")
+                    (server-start)
+                    (message "Server started"))))
+
+(global-set-key (kbd "C-c s k")
+                (defun my/kill-server ()
+                  "Kill Emacs server"
+                  (interactive)
+                  (if (server-running-p)
+                      (if (yes-or-no-p "Kill Emacs server? ")
+                          (kill-emacs)
+                        (message "Cancelled"))
+                    (message "Server not running"))))
+
+(global-set-key (kbd "C-c s r")
+                (defun my/restart-server ()
+                  "Restart Emacs server"
+                  (interactive)
+                  (when (server-running-p)
+                    (server-stop))
+                  (server-start)
+                  (message "Server restarted")))
 
 ;; Terminal
 (global-set-key (kbd "C-c t") 'eshell)

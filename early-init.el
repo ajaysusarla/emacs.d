@@ -19,6 +19,14 @@
 ;; Prevent frame resizing when font changes
 (setq frame-inhibit-implied-resize t)
 
+;; Initialize packages early
+(require 'package)
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/packages/")))
+(package-initialize)
+
 ;; Native compilation settings (Emacs 28+)
 (when (and (fboundp 'native-comp-available-p)
            (native-comp-available-p))

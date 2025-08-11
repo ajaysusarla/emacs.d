@@ -7,8 +7,9 @@
 ;; Projectile - project management
 (use-package projectile
   :diminish projectile-mode
-  :config
+  :init
   (projectile-mode +1)
+  :config
   (setq projectile-completion-system 'default
         projectile-enable-caching t
         projectile-indexing-method 'alien
@@ -16,12 +17,8 @@
         projectile-switch-project-action #'projectile-dired
         projectile-project-search-path '("~/Projects" "~/Work"))
   :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :bind
-  (("C-c p f" . projectile-find-file)
-   ("C-c p s g" . projectile-grep)
-   ("C-c p r" . projectile-replace)
-   ("C-c p p" . projectile-switch-project)))
+  ("C-c p" . projectile-command-map))
+  ;; Note: Individual bindings removed as they conflict with the keymap
 
 ;; Magit - Git interface
 (use-package magit
@@ -112,7 +109,7 @@
            ("Help" (or (name . "\\*Help\\*")
                       (name . "\\*Apropos\\*")
                       (name . "\\*info\\*"))))))
-
+  
   (add-hook 'ibuffer-mode-hook
             (lambda ()
               (ibuffer-switch-to-saved-filter-groups "default"))))

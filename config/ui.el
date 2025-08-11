@@ -20,7 +20,7 @@
      ;; macOS
      ((eq system-type 'darwin)
       (set-face-attribute 'default nil
-                          :font "SF Mono"
+                          :font "DejaVu Sans Mono"
                           :height 140))
      ;; Linux
      ((eq system-type 'gnu/linux)

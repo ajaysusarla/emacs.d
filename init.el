@@ -7,27 +7,18 @@
 ;; Performance: increase read buffer size for LSP
 (setq read-process-output-max (* 1024 1024)) ; 1MB
 
-;; Package management setup
-(require 'package)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")
-        ("nongnu" . "https://elpa.nongnu.org/packages/")))
+;; Add config directory to load path
+(add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "config/languages" user-emacs-directory))
 
-(package-initialize)
-
-;; Bootstrap use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t
-      use-package-expand-minimally t
-      use-package-compute-statistics t)
+;; Bootstrap package system and install required packages
+(load (expand-file-name "package-bootstrap.el" user-emacs-directory))
 
 ;; Add config directory to load path
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
+
+;; Bootstrap package system and install required packages
+(load (expand-file-name "package-bootstrap.el" user-emacs-directory))
 
 ;; Personal information (from your current config)
 (setq user-full-name "Parthasarathi Susarla"

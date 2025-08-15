@@ -48,6 +48,10 @@
       scroll-preserve-screen-position t
       auto-window-vscroll nil)
 
+;; Font-lock (syntax highlighting) configuration
+(setq font-lock-maximum-decoration t)  ; Maximum syntax highlighting
+(setq font-lock-maximum-size nil)      ; No size limit for font-lock
+
 ;; Enable useful features
 (global-auto-revert-mode 1)           ; Auto-refresh buffers
 (savehist-mode 1)                     ; Save minibuffer history
@@ -57,6 +61,7 @@
 (column-number-mode 1)                ; Show column numbers
 (show-paren-mode 1)                   ; Highlight matching parentheses
 (electric-pair-mode 1)                ; Auto-pair brackets
+(global-font-lock-mode 1)             ; Enable syntax highlighting globally
 
 ;; Line numbers for programming modes
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)

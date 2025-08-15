@@ -11,7 +11,13 @@
         ("gnu" . "https://elpa.gnu.org/packages/")
         ("nongnu" . "https://elpa.nongnu.org/packages/")))
 
-;; Don't call package-initialize here since it's called in early-init.el
+;; CRITICAL: Disable automatic package refresh and signature checking for speed
+(setq package-check-signature nil)
+(setq package-refresh-contents nil)
+
+;; Only refresh if we have no packages at all
+(unless (file-exists-p (expand-file-name "elpa" user-emacs-directory))
+  (package-refresh-contents))
 
 ;; Bootstrap use-package
 (unless (package-installed-p 'use-package)
@@ -19,7 +25,10 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure t
+      use-package-always-defer nil  ; Don't defer by default for speed
+      use-package-check-before-init nil  ; Skip version checks
+      use-package-expand-minimally t)  ; Minimal expansion for speed
 
 ;; List of all packages used in this configuration
 (defvar my/required-packages

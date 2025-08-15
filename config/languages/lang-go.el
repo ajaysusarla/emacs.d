@@ -16,7 +16,7 @@
                       (add-hook 'before-save-hook #'lsp-organize-imports t t))))
   :config
   (setq gofmt-command "goimports")
-
+  
   ;; Go-specific keybindings
   :bind (:map go-mode-map
               ("C-c C-f" . gofmt)
@@ -31,20 +31,6 @@
 (use-package go-eldoc
   :hook (go-mode . go-eldoc-setup))
 
-;; Go guru for navigation
-(use-package go-guru
-  :hook (go-mode . go-guru-hl-identifier-mode))
-
-;; Go snippets
-(use-package go-snippets
-  :after yasnippet)
-
-;; Company backend for Go
-(use-package company-go
-  :after company
-  :config
-  (add-to-list 'company-backends 'company-go))
-
 ;; Go test integration
 (use-package gotest
   :bind (:map go-mode-map
@@ -54,10 +40,6 @@
               ("C-c t b" . go-test-current-benchmark)
               ("C-c t c" . go-test-current-coverage)))
 
-;; Go imports management
-(use-package goimports
-  :commands goimports)
-
 ;; LSP configuration for Go
 (with-eval-after-load 'lsp-mode
   ;; gopls configuration
@@ -66,7 +48,7 @@
         lsp-gopls-deep-completion t
         lsp-gopls-use-placeholders t
         lsp-gopls-server-args '("-debug" ":0"))
-
+  
   ;; Go-specific LSP settings
   (lsp-register-custom-settings
    '(("gopls.completeUnimported" t t)
@@ -77,7 +59,7 @@
 (use-package dap-mode
   :config
   (require 'dap-dlv-go)
-
+  
   ;; Go debug templates
   (dap-register-debug-template "Go Debug"
                                (list :type "go"
@@ -149,11 +131,11 @@
             ;; Customize indentation
             (setq tab-width 4)
             (setq indent-tabs-mode t)
-
+            
             ;; Enable features
             (subword-mode 1)
             (electric-pair-local-mode 1)
-
+            
             ;; Local keybindings
             (local-set-key (kbd "C-c r") 'my/go-run-main)
             (local-set-key (kbd "C-c b") 'my/go-build-project)
@@ -190,7 +172,7 @@
       ;; Set GOPATH if needed
       (when (file-exists-p (concat project-root "vendor/"))
         (setenv "GO111MODULE" "on"))
-
+      
       ;; Project-specific build tags
       (dir-locals-set-class-variables
        'go-project

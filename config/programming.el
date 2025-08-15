@@ -22,10 +22,10 @@
         lsp-modeline-code-actions-enable t
         lsp-modeline-diagnostics-enable t
         lsp-log-io nil)  ; Disable for performance
-
+  
   ;; Performance optimizations
   (setq lsp-use-plists t)
-
+  
   :bind (:map lsp-mode-map
               ("C-c l r" . lsp-rename)
               ("C-c l f" . lsp-format-buffer)
@@ -70,8 +70,9 @@
               ("C-c ! n" . flycheck-next-error)
               ("C-c ! p" . flycheck-previous-error)))
 
-;; Tree-sitter for better syntax highlighting (Emacs 29+)
-(when (treesit-available-p)
+;; Tree-sitter for better syntax highlighting (Emacs 29+) - OPTIONAL
+;; Disabled by default to avoid grammar installation requirements
+(when (and (treesit-available-p) nil)  ; Change nil to t to enable
   (use-package treesit
     :ensure nil
     :config
@@ -86,6 +87,36 @@
             (css-mode . css-ts-mode)
             (json-mode . json-ts-mode)
             (yaml-mode . yaml-ts-mode)))))
+
+;; Function to install tree-sitter grammars (run manually if you want tree-sitter)
+(defun my/install-treesit-grammars ()
+  "Install tree-sitter language grammars."
+  (interactive)
+  (when (treesit-available-p)
+    (let ((grammars '(c cpp go rust typescript javascript css json yaml)))
+      (dolist (lang grammars)
+        (unless (treesit-language-available-p lang)
+          (treesit-install-language-grammar lang))))
+    (message "Tree-sitter grammars installation completed")))
+
+;; Function to enable tree-sitter modes
+(defun my/enable-treesit-modes ()
+  "Enable tree-sitter modes for supported languages."
+  (interactive)
+  (if (treesit-available-p)
+      (progn
+        (setq major-mode-remap-alist
+              '((c-mode . c-ts-mode)
+                (c++-mode . c++-ts-mode)
+                (go-mode . go-ts-mode)
+                (rust-mode . rust-ts-mode)
+                (typescript-mode . typescript-ts-mode)
+                (js-mode . js-ts-mode)
+                (css-mode . css-ts-mode)
+                (json-mode . json-ts-mode)
+                (yaml-mode . yaml-ts-mode)))
+        (message "Tree-sitter modes enabled. Restart Emacs for full effect."))
+    (message "Tree-sitter not available in this Emacs build")))
 
 ;; Code formatting
 (use-package format-all

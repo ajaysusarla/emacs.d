@@ -52,15 +52,117 @@ A clean, performant Emacs configuration optimised for multi-language development
 # Backup existing configuration
 mv ~/.emacs.d ~/.emacs.d.backup$(date +%Y%m%d)
 
-# Clone/create the new configuration
-mkdir -p ~/.emacs.d/{config/languages,snippets,themes,backups,auto-saves}
+# Clone or create the new configuration
+git clone https://github.com/yourusername/emacs-config.git
+cd emacs-config
 
-# Copy all configuration files from this repository
-# (See migration guide for detailed instructions)
+# Run installation script
+chmod +x scripts/install.sh
+./scripts/install.sh
 
-# First startup will install packages automatically
+# First startup will install all MELPA/ELPA packages automatically
+# This may take 5-10 minutes on first run
 emacs
 ```
+
+### Manual Installation
+
+If you prefer to install manually:
+
+```bash
+# Create directory structure
+mkdir -p ~/.emacs.d/{config/languages,snippets,backups,auto-saves}
+
+# Copy configuration files
+cp configs/* ~/.emacs.d/
+cp -r configs/config ~/.emacs.d/
+
+# Start Emacs - packages will install automatically
+emacs
+```
+
+## Package Management
+
+This configuration uses a bootstrap system that automatically installs all required packages from MELPA/GNU ELPA on first startup.
+
+### Installed Packages
+
+**Core Completion Framework:**
+- `vertico` - Vertical completion UI
+- `orderless` - Flexible completion styles  
+- `marginalia` - Completion annotations
+- `consult` - Enhanced search and navigation
+- `embark` - Actions on completion candidates
+- `corfu` - In-buffer completion popup
+- `cape` - Completion at point extensions
+- `which-key` - Keybinding help
+
+**Project Management:**
+- `projectile` - Project navigation and management
+- `magit` - Git interface
+- `git-gutter` - Show git changes in fringe
+- `treemacs` - File tree sidebar
+- `perspective` - Workspace management
+
+**Programming Tools:**
+- `lsp-mode` - Language Server Protocol client
+- `lsp-ui` - UI improvements for LSP
+- `flycheck` - Syntax checking
+- `company` - Text completion (fallback)
+- `yasnippet` - Snippet system
+- `smartparens` - Balanced parentheses
+- `multiple-cursors` - Edit multiple locations
+
+**Language-Specific Packages:**
+
+*Go Development:*
+- `go-mode` - Go language support
+- `go-eldoc` - Documentation in echo area
+- `gotest` - Test integration
+
+*Rust Development:*
+- `rustic` - Enhanced Rust mode
+- `cargo` - Cargo integration
+- `toml-mode` - TOML file support
+
+*C/C++ Development:*
+- `modern-cpp-font-lock` - Enhanced C++ highlighting
+- `cmake-mode` - CMake file support
+- `clang-format` - Code formatting
+
+*TypeScript/JavaScript:*
+- `typescript-mode` - TypeScript support
+- `tide` - TypeScript IDE features
+- `web-mode` - JSX/TSX support
+- `prettier-js` - Code formatting
+
+**UI and Themes:**
+- `doom-themes` - Modern theme collection
+- `doom-modeline` - Enhanced modeline
+- `all-the-icons` - Icon fonts
+- `dashboard` - Startup screen
+
+### Package Management Commands
+
+```elisp
+;; Check package status
+M-x my/check-package-status
+
+;; Install missing packages
+M-x my/install-missing-packages
+
+;; Update all packages  
+M-x my/update-all-packages
+
+;; List installed packages
+M-x list-packages
+```
+
+### Adding New Packages
+
+1. Add the package name to `my/required-packages` in `package-bootstrap.el`
+2. Restart Emacs or run `M-x my/install-missing-packages`
+3. Add configuration using `use-package` in the appropriate config file
 
 ## Dependencies
 
@@ -167,6 +269,31 @@ sudo apt install clang-tools
 # Optional: clang-format for code formatting
 # Usually included with clang-tools
 ```
+
+#### Tree-sitter Setup (Optional - Emacs 29+)
+
+Tree-sitter provides better syntax highlighting and parsing, but requires language grammars to be installed.
+
+**To enable tree-sitter:**
+
+1. **Install language grammars:**
+   ```elisp
+   M-x my/install-treesit-grammars
+   ```
+
+2. **Enable tree-sitter modes:**
+   ```elisp
+   M-x my/enable-treesit-modes
+   ```
+
+3. **Restart Emacs** for full effect
+
+**Tree-sitter Management:**
+- `C-c T i` - Install tree-sitter grammars
+- `C-c T e` - Enable tree-sitter modes
+- `C-c T s` - Show tree-sitter status
+
+**Note:** Tree-sitter is disabled by default to avoid grammar installation requirements. Traditional syntax highlighting works perfectly well for most use cases.
 
 #### TypeScript/Node.js Development
 ```bash
@@ -293,11 +420,19 @@ npm install -g @typescript-eslint/eslint-plugin
 | Key Binding | Command | Description |
 |-------------|---------|-------------|
 | `C-c e` | `my/edit-init-file` | Edit init.el |
-| `C-c q` | `my/quit-emacs` | Quit with confirmation |
+| `C-c q` | `my/quit-emacs` | Quit with confirmation (server-aware) |
 | `C-c t` | `eshell` | Open terminal |
 | `C-c r` | `revert-buffer` | Reload file from disk |
 | `C-c w` | `whitespace-mode` | Toggle whitespace visibility |
 | `C-c n` | `display-line-numbers-mode` | Toggle line numbers |
+
+### Server Mode Management
+| Key Binding | Command | Description |
+|-------------|---------|-------------|
+| `C-c s s` | `my/start-server` | Start Emacs server |
+| `C-c s k` | `my/kill-server` | Kill Emacs server |
+| `C-c s r` | `my/restart-server` | Restart Emacs server |
+| `C-x C-c` | `delete-frame` | Close frame (in server mode) |
 
 ### Debug Mode (DAP)
 | Key Binding | Command | Description |
@@ -353,14 +488,50 @@ Settings for macOS and Linux are automatically detected and applied via `config/
 ### Startup Time
 - **First startup:** ~10-15 seconds (package installation)
 - **Subsequent startups:** ~1-2 seconds
+- **Server mode:** Instant client connections after daemon is running
 - **Memory usage:** ~50-80MB after startup
+
+### Server Mode (Recommended)
+
+This configuration automatically starts Emacs in server mode, which provides:
+
+**Benefits:**
+- **Instant file opening** from terminal: `emacsclient file.txt`
+- **Shared sessions** - all clients share the same Emacs instance
+- **Persistent state** - buffers, history, and customizations persist
+- **Lower resource usage** - single Emacs process serves multiple clients
+
+**Usage:**
+```bash
+# Start Emacs daemon (automatic on first launch)
+emacs --daemon
+
+# Open files instantly
+emacsclient -c file.txt          # Open in new frame
+emacsclient -t file.txt          # Open in terminal
+emacsclient file.txt             # Open in existing frame
+
+# Create desktop/shell aliases
+alias e='emacsclient -c'         # GUI Emacs
+alias et='emacsclient -t'        # Terminal Emacs
+alias ec='emacsclient'           # Use existing frame
+
+# Stop daemon when needed
+emacsclient -e "(kill-emacs)"
+```
+
+**Server Mode Keybindings:**
+- `C-x C-c` in server mode closes the current frame (not Emacs)
+- `M-x kill-emacs` actually stops the server
+- `M-x server-start` manually starts server if needed
 
 ### Optimisation Tips
 
-1. **Increase GC threshold** during startup (already configured)
-2. **Use native compilation** (Emacs 28+) for better performance
-3. **Disable unused packages** by commenting them out
-4. **Use `emacs --daemon`** for instant client startup
+1. **Use server mode** for instant startup (automatically configured)
+2. **Increase GC threshold** during startup (already configured)
+3. **Use native compilation** (Emacs 28+) for better performance
+4. **Disable unused packages** by commenting them out
+5. **Profile with `emacs --daemon`** for fastest experience
 
 ### Profiling
 
@@ -379,37 +550,57 @@ M-x profiler-report
 
 ## Troubleshooting
 
-### Common Issues
+### Common Startup Issues
 
-#### LSP Not Starting
-1. Verify language server is installed: `which gopls`, `which rust-analyzer`, etc.
-2. Check LSP logs: `M-x lsp-doctor`
-3. Restart LSP: `C-c l q` (restart workspace)
+#### Missing Configuration Files
+**Error:** `File is missing: Cannot open load file, No such file or directory, lang-c`
 
-#### Completion Not Working
-1. Check if corfu is active: `M-x corfu-mode`
-2. Verify LSP is running: `C-c l` commands should work
-3. Check company as fallback: `M-x company-mode`
+**Solution:**
+```bash
+# Run the fix script to create missing files
+chmod +x scripts/fix-startup.sh
+./scripts/fix-startup.sh
 
-#### Slow Performance
-1. Check startup time: restart Emacs and time it
-2. Profile with `M-x profiler-start`
-3. Check large file threshold: increase if working with big files
-4. Disable Git gutter for large repositories
-
-#### Package Installation Fails
-1. Update package archives: `M-x package-refresh-contents`
-2. Clear package cache: delete `~/.emacs.d/elpa`
-3. Check internet connection and proxy settings
-
-### Debug Mode
-
-Enable debug mode for troubleshooting:
-
-```elisp
-(setq debug-on-error t)
-(setq lsp-log-io t)  ; Enable LSP debugging (performance impact)
+# Or create the missing directories manually
+mkdir -p ~/.emacs.d/config/languages
 ```
+
+#### Package Installation Issues
+**Error:** `The package embark-consult should be installed if you use both Embark and Consult`
+
+**Solution:**
+```bash
+# Check package status
+emacs --batch --eval "(progn (load-file \"~/.emacs.d/package-bootstrap.el\") (my/check-package-status))"
+
+# Or in Emacs:
+M-x my/install-missing-packages
+```
+
+#### Projectile Keybinding Conflicts
+**Error:** `Key sequence C-c p f starts with non-prefix key C-c p`
+
+**Solution:** This is fixed in the updated configuration. The individual keybindings are removed in favour of the projectile keymap.
+
+#### Package Initialize Warning
+**Warning:** `Unnecessary call to 'package-initialize' in init file`
+
+**Solution:** This is fixed by moving package initialization to `early-init.el`.
+
+### Quick Diagnostic
+
+Run the diagnostic script to check your configuration:
+
+```bash
+chmod +x scripts/diagnose.sh
+./scripts/diagnose.sh
+```
+
+This will check:
+- ✅ Required files exist
+- ✅ Directory structure is correct  
+- ✅ Basic configuration loads
+- ✅ Package installation status
 
 ### Getting Help
 
@@ -419,3 +610,19 @@ Enable debug mode for troubleshooting:
 - **LSP doctor:** `M-x lsp-doctor`
 - **Package status:** `M-x list-packages`
 
+## Contributing
+
+This configuration is designed to be modular and easily customisable. To contribute:
+
+1. Keep language-specific settings in their respective files
+2. Use `use-package` for all package configurations
+3. Add appropriate keybindings and documentation
+4. Test across platforms (macOS and Linux)
+
+## License
+
+This configuration is provided as-is under the MIT license. Feel free to modify and distribute.
+
+---
+
+**Happy coding with Emacs!** 🚀

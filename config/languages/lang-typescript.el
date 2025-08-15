@@ -21,7 +21,7 @@
   (setq tide-completion-ignore-case t
         tide-always-show-documentation t
         tide-server-max-response-length 524288)
-
+  
   :bind (:map tide-mode-map
               ("C-c d" . tide-documentation-at-point)
               ("C-c r" . tide-rename-symbol)
@@ -50,7 +50,7 @@
         web-mode-code-indent-offset 2
         web-mode-attr-indent-offset 2
         web-mode-attr-value-indent-offset 2)
-
+  
   ;; Enable TypeScript in web-mode for .tsx files
   (add-hook 'web-mode-hook
             (lambda ()
@@ -173,9 +173,9 @@
             (local-set-key (kbd "C-c l") 'my/typescript-lint)
             (local-set-key (kbd "C-c L") 'my/typescript-lint-fix)))
 
-;; React snippets
-(use-package react-snippets
-  :after yasnippet)
+;; React snippets - using yasnippet-snippets instead
+;; (use-package react-snippets
+;;   :after yasnippet)
 
 ;; Emmet for HTML/JSX expansion
 (use-package emmet-mode
@@ -184,10 +184,23 @@
   :config
   (setq emmet-expand-jsx-className? t))
 
-;; Auto-rename JSX tags
-(use-package auto-rename-tag
-  :hook ((web-mode . auto-rename-tag-mode)
-         (typescript-mode . auto-rename-tag-mode)))
+;; Auto-rename JSX tags - custom implementation since package doesn't exist
+(defun my/auto-rename-jsx-tag ()
+  "Simple auto-rename for JSX tags."
+  (when (and (derived-mode-p 'web-mode 'typescript-mode)
+             (looking-back "<\\([a-zA-Z][a-zA-Z0-9]*\\)" (line-beginning-position)))
+    (let ((tag-name (match-string 1)))
+      (save-excursion
+        (when (search-forward (concat "</" tag-name ">") (line-end-position) t)
+          (replace-match (concat "</" tag-name ">")))))))
+
+;; Add to typescript and web-mode hooks
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (add-hook 'post-self-insert-hook 'my/auto-rename-jsx-tag nil t)))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (add-hook 'post-self-insert-hook 'my/auto-rename-jsx-tag nil t)))
 
 ;; Project-specific TypeScript configuration
 (defun my/setup-typescript-project ()
@@ -199,7 +212,7 @@
       (when (file-exists-p (concat project-root "package.json"))
         ;; Set project-specific compilation commands
         (setq-local compile-command "npm run build")
-
+        
         ;; Check for tsconfig.json
         (when (file-exists-p (concat project-root "tsconfig.json"))
           ;; Enable TypeScript-specific features

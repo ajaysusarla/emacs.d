@@ -28,14 +28,14 @@
   (setq rustic-format-on-save t
         rustic-lsp-client 'lsp-mode
         rustic-indent-offset 4)
-
+  
   ;; Use rust-analyzer
   (setq rustic-analyzer-command '("rust-analyzer"))
-
+  
   ;; Cargo integration
   (setq rustic-cargo-use-last-stored-arguments t
         rustic-default-clippy-arguments "--all-features")
-
+  
   ;; Hook for buffer-local settings
   (add-hook 'rustic-mode-hook #'my/rustic-mode-hook))
 
@@ -44,7 +44,7 @@
   ;; Prevent query for saving when running Cargo commands
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
-
+  
   ;; Enable features
   (electric-pair-local-mode 1)
   (subword-mode 1))
@@ -62,7 +62,7 @@
         lsp-rust-analyzer-display-reborrow-hints nil
         lsp-eldoc-render-all t
         lsp-idle-delay 0.6)
-
+  
   ;; Enable rust-analyzer features
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
@@ -102,7 +102,7 @@
     
     ;; Install .extension/vscode
     (dap-gdb-lldb-setup)
-
+    
     (dap-register-debug-template
      "Rust::LLDB Run Configuration"
      (list :type "lldb"
@@ -216,7 +216,7 @@
       (when (file-exists-p (concat project-root "Cargo.toml"))
         ;; Set project-specific compilation command
         (setq-local compile-command "cargo build")
-
+        
         ;; Enable rust-analyzer if available
         (when (executable-find "rust-analyzer")
           (lsp))))))

@@ -17,6 +17,8 @@
   :hook ((c-mode . lsp-deferred)
          (c++-mode . lsp-deferred)
          (c-mode-common . (lambda ()
+                            ;; Enable font-lock mode for syntax highlighting
+                            (font-lock-mode 1)
                             ;; Your custom styles from saps-coding.el
                             (c-set-style "linux")
                             (setq c-basic-offset 4)
@@ -43,7 +45,7 @@
                  (c-block-comment-prefix . "* ")
                  (c-echo-syntactic-information-p . t)
                  (c-basic-offset . 8)))
-
+  
   (c-add-style "saps-gstreamer"
                '("k&r"
                  (c-offsets-alist
@@ -64,18 +66,25 @@
                  (c-block-comment-prefix . "* ")
                  (c-echo-syntactic-information-p . t)
                  (c-basic-offset . 2)))
-
+  
   ;; Enhanced font-lock for C/C++
   (font-lock-add-keywords 'c-mode
-                          '(("\\<.+_t\\>" . font-lock-type-face)
-                            ("\\<bool\\>" . font-lock-type-face)
-                            ("\\<foreach\\>" . font-lock-keyword-face)))
-
+                          '(("\\<\\(auto\\|register\\|static\\|extern\\|typedef\\)\\>" . font-lock-keyword-face)
+                            ("\\<\\(const\\|volatile\\|restrict\\)\\>" . font-lock-type-face)
+                            ("\\<\\(void\\|char\\|short\\|int\\|long\\|float\\|double\\|signed\\|unsigned\\)\\>" . font-lock-type-face)
+                            ("\\<\\(struct\\|union\\|enum\\)\\>" . font-lock-keyword-face)
+                            ("\\<.+_t\\>" . font-lock-type-face)
+                            ("\\<\\(true\\|false\\|NULL\\)\\>" . font-lock-constant-face)))
+  
   (font-lock-add-keywords 'c++-mode
-                          '(("\\<.+_t\\>" . font-lock-type-face)
-                            ("\\<bool\\>" . font-lock-type-face)
-                            ("\\<nullptr\\|override\\|final\\|constexpr\\|noexcept\\|auto\\|decltype\\>" . font-lock-keyword-face)))
-
+                          '(("\\<\\(auto\\|register\\|static\\|extern\\|typedef\\|mutable\\)\\>" . font-lock-keyword-face)
+                            ("\\<\\(const\\|volatile\\|restrict\\|constexpr\\|noexcept\\)\\>" . font-lock-type-face)
+                            ("\\<\\(void\\|char\\|short\\|int\\|long\\|float\\|double\\|signed\\|unsigned\\|bool\\)\\>" . font-lock-type-face)
+                            ("\\<\\(class\\|struct\\|union\\|enum\\|namespace\\|template\\|typename\\)\\>" . font-lock-keyword-face)
+                            ("\\<\\(public\\|private\\|protected\\|virtual\\|override\\|final\\)\\>" . font-lock-keyword-face)
+                            ("\\<\\(nullptr\\|true\\|false\\|NULL\\)\\>" . font-lock-constant-face)
+                            ("\\<.+_t\\>" . font-lock-type-face)))
+  
   ;; Keybindings
   :bind (:map c-mode-base-map
               ("RET" . newline-and-indent)
@@ -123,10 +132,10 @@
   :config
   (dap-ui-mode)
   (dap-ui-controls-mode 1)
-
+  
   (require 'dap-lldb)
   (require 'dap-gdb-lldb)
-
+  
   ;; C/C++ debug templates
   (dap-register-debug-template "LLDB::Run"
                                (list :type "lldb"
@@ -135,7 +144,7 @@
                                      :gdbpath "lldb"
                                      :target nil
                                      :cwd nil))
-
+  
   :bind (:map dap-mode-map
               ("<f12>" . dap-debug)
               ("<f8>" . dap-continue)
@@ -166,7 +175,7 @@
                                   "--completion-style=detailed"
                                   "--header-insertion=never"
                                   "--header-insertion-decorators=0"))
-
+  
   ;; Enable clangd
   (add-to-list 'lsp-language-id-configuration '(c-mode . "c"))
   (add-to-list 'lsp-language-id-configuration '(c++-mode . "cpp")))
